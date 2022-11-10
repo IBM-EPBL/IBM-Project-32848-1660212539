@@ -1,0 +1,735 @@
+
+import pandas as pd
+
+import seaborn as sns
+
+import matplotlib.pyplot as plt
+#load/read dataset
+data11=pd.read_csv(r"C:\Users\rnsam\Desktop\Churn_Modelling.csv")
+data11
+RowNumber	CustomerId	Surname	CreditScore	Geography	Gender	Age	Tenure	Balance	NumOfProducts	HasCrCard	IsActiveMember	EstimatedSalary	Exited
+0	1	15634602	Hargrave	619	France	Female	42	2	0.00	1	1	1	101348.88	1
+1	2	15647311	Hill	608	Spain	Female	41	1	83807.86	1	0	1	112542.58	0
+2	3	15619304	Onio	502	France	Female	42	8	159660.80	3	1	0	113931.57	1
+3	4	15701354	Boni	699	France	Female	39	1	0.00	2	0	0	93826.63	0
+4	5	15737888	Mitchell	850	Spain	Female	43	2	125510.82	1	1	1	79084.10	0
+...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+9995	9996	15606229	Obijiaku	771	France	Male	39	5	0.00	2	1	0	96270.64	0
+9996	9997	15569892	Johnstone	516	France	Male	35	10	57369.61	1	1	1	101699.77	0
+9997	9998	15584532	Liu	709	France	Female	36	7	0.00	1	0	1	42085.58	1
+9998	9999	15682355	Sabbatini	772	Germany	Male	42	3	75075.31	2	1	0	92888.52	1
+9999	10000	15628319	Walker	792	France	Female	28	4	130142.79	1	1	0	38190.78	0
+10000 rows × 14 columns
+
+#print top 5 rows
+data11.head()
+RowNumber	CustomerId	Surname	CreditScore	Geography	Gender	Age	Tenure	Balance	NumOfProducts	HasCrCard	IsActiveMember	EstimatedSalary	Exited
+0	1	15634602	Hargrave	619	France	Female	42	2	0.00	1	1	1	101348.88	1
+1	2	15647311	Hill	608	Spain	Female	41	1	83807.86	1	0	1	112542.58	0
+2	3	15619304	Onio	502	France	Female	42	8	159660.80	3	1	0	113931.57	1
+3	4	15701354	Boni	699	France	Female	39	1	0.00	2	0	0	93826.63	0
+4	5	15737888	Mitchell	850	Spain	Female	43	2	125510.82	1	1	1	79084.10	0
+#print last 5 rows
+data11.tail()
+RowNumber	CustomerId	Surname	CreditScore	Geography	Gender	Age	Tenure	Balance	NumOfProducts	HasCrCard	IsActiveMember	EstimatedSalary	Exited
+9995	9996	15606229	Obijiaku	771	France	Male	39	5	0.00	2	1	0	96270.64	0
+9996	9997	15569892	Johnstone	516	France	Male	35	10	57369.61	1	1	1	101699.77	0
+9997	9998	15584532	Liu	709	France	Female	36	7	0.00	1	0	1	42085.58	1
+9998	9999	15682355	Sabbatini	772	Germany	Male	42	3	75075.31	2	1	0	92888.52	1
+9999	10000	15628319	Walker	792	France	Female	28	4	130142.79	1	1	0	38190.78	0
+data11.shape
+(10000, 14)
+data11.info()
+RangeIndex: 10000 entries, 0 to 9999
+Data columns (total 14 columns):
+ #   Column           Non-Null Count  Dtype  
+---  ------           --------------  -----  
+ 0   RowNumber        10000 non-null  int64  
+ 1   CustomerId       10000 non-null  int64  
+ 2   Surname          10000 non-null  object 
+ 3   CreditScore      10000 non-null  int64  
+ 4   Geography        10000 non-null  object 
+ 5   Gender           10000 non-null  object 
+ 6   Age              10000 non-null  int64  
+ 7   Tenure           10000 non-null  int64  
+ 8   Balance          10000 non-null  float64
+ 9   NumOfProducts    10000 non-null  int64  
+ 10  HasCrCard        10000 non-null  int64  
+ 11  IsActiveMember   10000 non-null  int64  
+ 12  EstimatedSalary  10000 non-null  float64
+ 13  Exited           10000 non-null  int64  
+dtypes: float64(2), int64(9), object(3)
+memory usage: 1.1+ MB
+1.univariate analysis
+#histogram
+plt.hist(data11['Age'])
+(array([ 611., 2179., 3629., 1871.,  828.,  523.,  208.,  127.,   20.,
+           4.]),
+ array([18. , 25.4, 32.8, 40.2, 47.6, 55. , 62.4, 69.8, 77.2, 84.6, 92. ]),
+ )
+
+plt.hist(data11['CreditScore'])
+(array([  19.,  166.,  447.,  958., 1444., 1866., 1952., 1525.,  968.,
+         655.]),
+ array([350., 400., 450., 500., 550., 600., 650., 700., 750., 800., 850.]),
+ )
+
+#BOX PLOTS
+plt.boxplot(data11['EstimatedSalary'])
+{'whiskers': [,
+  ],
+ 'caps': [,
+  ],
+ 'boxes': [],
+ 'medians': [],
+ 'fliers': [],
+ 'means': []}
+
+abs=data11['Gender'].value_counts()
+abs
+Male      5457
+Female    4543
+Name: Gender, dtype: int64
+#pie chart
+plt.pie(abs,autopct='%.2f')
+([,
+  ],
+ [Text(-0.1573859183753976, 1.088682539906438, ''),
+  Text(0.1573859183753977, -1.088682539906438, '')],
+ [Text(-0.08584686456839868, 0.5938268399489661, '54.57'),
+  Text(0.08584686456839873, -0.5938268399489661, '45.43')])
+
+#distribution plot
+sns.distplot(data11.CreditScore)
+C:\Users\rnsam\anaconda3\lib\site-packages\seaborn\distributions.py:2619: FutureWarning: `distplot` is a deprecated function and will be removed in a future version. Please adapt your code to use either `displot` (a figure-level function with similar flexibility) or `histplot` (an axes-level function for histograms).
+  warnings.warn(msg, FutureWarning)
+
+#density plot
+sns.displot(data11.CreditScore,kind='kde')
+
+sns.countplot(data11['Age']) 
+C:\Users\rnsam\anaconda3\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+
+Bi - Variate Analysis
+#scatter plot
+sns.scatterplot(data11.EstimatedSalary,data11.Balance)
+C:\Users\rnsam\anaconda3\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+
+#jointplot
+sns.jointplot(data11.NumOfProducts,data11.IsActiveMember)
+C:\Users\rnsam\anaconda3\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+
+#boxplot
+sns.boxplot(data11.CreditScore)
+C:\Users\rnsam\anaconda3\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+
+sns.boxplot(y=data11.Balance,x=data11.Exited)
+
+#barplot
+sns.barplot(x='Tenure',y='NumOfProducts',data=data11)
+
+#point plot
+sns.pointplot(x='CreditScore',y='Age',data=data11,color='darkorange')
+
+Multi - Variate Analysis
+#pair plot
+sns.pairplot(data11)
+
+descriptive statistics
+import pandas as pd
+import numpy as np
+import matplotlib as plt
+import seaborn as sns
+data12=pd.read_csv(r"C:\Users\rnsam\Desktop\Churn_Modelling.csv")
+data12
+RowNumber	CustomerId	Surname	CreditScore	Geography	Gender	Age	Tenure	Balance	NumOfProducts	HasCrCard	IsActiveMember	EstimatedSalary	Exited
+0	1	15634602	Hargrave	619	France	Female	42	2	0.00	1	1	1	101348.88	1
+1	2	15647311	Hill	608	Spain	Female	41	1	83807.86	1	0	1	112542.58	0
+2	3	15619304	Onio	502	France	Female	42	8	159660.80	3	1	0	113931.57	1
+3	4	15701354	Boni	699	France	Female	39	1	0.00	2	0	0	93826.63	0
+4	5	15737888	Mitchell	850	Spain	Female	43	2	125510.82	1	1	1	79084.10	0
+...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+9995	9996	15606229	Obijiaku	771	France	Male	39	5	0.00	2	1	0	96270.64	0
+9996	9997	15569892	Johnstone	516	France	Male	35	10	57369.61	1	1	1	101699.77	0
+9997	9998	15584532	Liu	709	France	Female	36	7	0.00	1	0	1	42085.58	1
+9998	9999	15682355	Sabbatini	772	Germany	Male	42	3	75075.31	2	1	0	92888.52	1
+9999	10000	15628319	Walker	792	France	Female	28	4	130142.79	1	1	0	38190.78	0
+10000 rows × 14 columns
+
+measure of central tendancy mean median mode
+data12.mean()
+C:\Users\rnsam\AppData\Local\Temp\ipykernel_1844\2657244146.py:1: FutureWarning: Dropping of nuisance columns in DataFrame reductions (with 'numeric_only=None') is deprecated; in a future version this will raise TypeError.  Select only valid columns before calling the reduction.
+  data12.mean()
+RowNumber          5.000500e+03
+CustomerId         1.569094e+07
+CreditScore        6.505288e+02
+Age                3.892180e+01
+Tenure             5.012800e+00
+Balance            7.648589e+04
+NumOfProducts      1.530200e+00
+HasCrCard          7.055000e-01
+IsActiveMember     5.151000e-01
+EstimatedSalary    1.000902e+05
+Exited             2.037000e-01
+dtype: float64
+data12.median()
+C:\Users\rnsam\AppData\Local\Temp\ipykernel_1844\3281788197.py:1: FutureWarning: Dropping of nuisance columns in DataFrame reductions (with 'numeric_only=None') is deprecated; in a future version this will raise TypeError.  Select only valid columns before calling the reduction.
+  data12.median()
+RowNumber          5.000500e+03
+CustomerId         1.569074e+07
+CreditScore        6.520000e+02
+Age                3.700000e+01
+Tenure             5.000000e+00
+Balance            9.719854e+04
+NumOfProducts      1.000000e+00
+HasCrCard          1.000000e+00
+IsActiveMember     1.000000e+00
+EstimatedSalary    1.001939e+05
+Exited             0.000000e+00
+dtype: float64
+data12.mode()
+RowNumber	CustomerId	Surname	CreditScore	Geography	Gender	Age	Tenure	Balance	NumOfProducts	HasCrCard	IsActiveMember	EstimatedSalary	Exited
+0	1	15565701	Smith	850.0	France	Male	37.0	2.0	0.0	1.0	1.0	1.0	24924.92	0.0
+1	2	15565706	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+2	3	15565714	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+3	4	15565779	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+4	5	15565796	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+9995	9996	15815628	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+9996	9997	15815645	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+9997	9998	15815656	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+9998	9999	15815660	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+9999	10000	15815690	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+10000 rows × 14 columns
+
+skewness
+data12.skew()
+C:\Users\rnsam\AppData\Local\Temp\ipykernel_1844\971202065.py:1: FutureWarning: Dropping of nuisance columns in DataFrame reductions (with 'numeric_only=None') is deprecated; in a future version this will raise TypeError.  Select only valid columns before calling the reduction.
+  data12.skew()
+RowNumber          0.000000
+CustomerId         0.001149
+CreditScore       -0.071607
+Age                1.011320
+Tenure             0.010991
+Balance           -0.141109
+NumOfProducts      0.745568
+HasCrCard         -0.901812
+IsActiveMember    -0.060437
+EstimatedSalary    0.002085
+Exited             1.471611
+dtype: float64
+print(sns.distplot(data12['Age'],color='red'))
+AxesSubplot(0.125,0.125;0.775x0.755)
+C:\Users\rnsam\anaconda3\lib\site-packages\seaborn\distributions.py:2619: FutureWarning: `distplot` is a deprecated function and will be removed in a future version. Please adapt your code to use either `displot` (a figure-level function with similar flexibility) or `histplot` (an axes-level function for histograms).
+  warnings.warn(msg, FutureWarning)
+
+kurtosis
+data12.kurt()
+C:\Users\rnsam\AppData\Local\Temp\ipykernel_1844\2524243187.py:1: FutureWarning: Dropping of nuisance columns in DataFrame reductions (with 'numeric_only=None') is deprecated; in a future version this will raise TypeError.  Select only valid columns before calling the reduction.
+  data12.kurt()
+RowNumber         -1.200000
+CustomerId        -1.196113
+CreditScore       -0.425726
+Age                1.395347
+Tenure            -1.165225
+Balance           -1.489412
+NumOfProducts      0.582981
+HasCrCard         -1.186973
+IsActiveMember    -1.996747
+EstimatedSalary   -1.181518
+Exited             0.165671
+dtype: float64
+IQR
+quantile=data12['CreditScore'].quantile(q=[0.75,0.25])
+quantile
+0.75    718.0
+0.25    584.0
+Name: CreditScore, dtype: float64
+quantile=data12['EstimatedSalary'].quantile(q=[0.75,0.25])
+quantile
+0.75    149388.2475
+0.25     51002.1100
+Name: EstimatedSalary, dtype: float64
+#all data sets cal
+quantile=data12.quantile(q=[0.75,0.25])
+quantile
+RowNumber	CustomerId	CreditScore	Age	Tenure	Balance	NumOfProducts	HasCrCard	IsActiveMember	EstimatedSalary	Exited
+0.75	7500.25	15753233.75	718.0	44.0	7.0	127644.24	2.0	1.0	1.0	149388.2475	0.0
+0.25	2500.75	15628528.25	584.0	32.0	3.0	0.00	1.0	0.0	0.0	51002.1100	0.0
+IQR=quantile.iloc[0]-quantile.iloc[1]
+IQR
+RowNumber            4999.5000
+CustomerId         124705.5000
+CreditScore           134.0000
+Age                    12.0000
+Tenure                  4.0000
+Balance            127644.2400
+NumOfProducts           1.0000
+HasCrCard               1.0000
+IsActiveMember          1.0000
+EstimatedSalary     98386.1375
+Exited                  0.0000
+dtype: float64
+x=data12[['Balance','Age']]
+x
+Balance	Age
+0	0.00	42
+1	83807.86	41
+2	159660.80	42
+3	0.00	39
+4	125510.82	43
+...	...	...
+9995	0.00	39
+9996	57369.61	35
+9997	0.00	36
+9998	75075.31	42
+9999	130142.79	28
+10000 rows × 2 columns
+
+#normalization
+from sklearn.preprocessing import MinMaxScaler
+min_max=MinMaxScaler(feature_range=(0,1))
+min_max.fit_transform(x)
+array([[0.        , 0.32432432],
+       [0.33403148, 0.31081081],
+       [0.63635718, 0.32432432],
+       ...,
+       [0.        , 0.24324324],
+       [0.29922631, 0.32432432],
+       [0.51870777, 0.13513514]])
+var and std deviation
+#variance
+data12.var()
+C:\Users\rnsam\AppData\Local\Temp\ipykernel_1844\2290123299.py:2: FutureWarning: Dropping of nuisance columns in DataFrame reductions (with 'numeric_only=None') is deprecated; in a future version this will raise TypeError.  Select only valid columns before calling the reduction.
+  data12.var()
+RowNumber          8.334167e+06
+CustomerId         5.174815e+09
+CreditScore        9.341860e+03
+Age                1.099941e+02
+Tenure             8.364673e+00
+Balance            3.893436e+09
+NumOfProducts      3.383218e-01
+HasCrCard          2.077905e-01
+IsActiveMember     2.497970e-01
+EstimatedSalary    3.307457e+09
+Exited             1.622225e-01
+dtype: float64
+#std deviation
+data12.std()
+C:\Users\rnsam\AppData\Local\Temp\ipykernel_23756\3292746498.py:2: FutureWarning: Dropping of nuisance columns in DataFrame reductions (with 'numeric_only=None') is deprecated; in a future version this will raise TypeError.  Select only valid columns before calling the reduction.
+  data12.std()
+RowNumber           2886.895680
+CustomerId         71936.186123
+CreditScore           96.653299
+Age                   10.487806
+Tenure                 2.892174
+Balance            62397.405202
+NumOfProducts          0.581654
+HasCrCard              0.455840
+IsActiveMember         0.499797
+EstimatedSalary    57510.492818
+Exited                 0.402769
+dtype: float64
+scaling
+data12.columns
+Index(['RowNumber', 'CustomerId', 'Surname', 'CreditScore', 'Geography',
+       'Gender', 'Age', 'Tenure', 'Balance', 'NumOfProducts', 'HasCrCard',
+       'IsActiveMember', 'EstimatedSalary', 'Exited'],
+      dtype='object')
+r=data12[['Balance','Age']]
+r
+Balance	Age
+0	0.00	42
+1	83807.86	41
+2	159660.80	42
+3	0.00	39
+4	125510.82	43
+...	...	...
+9995	0.00	39
+9996	57369.61	35
+9997	0.00	36
+9998	75075.31	42
+9999	130142.79	28
+10000 rows × 2 columns
+
+from sklearn.preprocessing import StandardScaler
+scale=StandardScaler()
+st_scale=scale.fit_transform(r)
+st_scale
+array([[-1.22584767,  0.29351742],
+       [ 0.11735002,  0.19816383],
+       [ 1.33305335,  0.29351742],
+       ...,
+       [-1.22584767, -0.27860412],
+       [-0.02260751,  0.29351742],
+       [ 0.85996499, -1.04143285]])
+#range
+data12.max()
+RowNumber              10000
+CustomerId          15815690
+Surname               Zuyeva
+CreditScore              850
+Geography              Spain
+Gender                  Male
+Age                       92
+Tenure                    10
+Balance            250898.09
+NumOfProducts              4
+HasCrCard                  1
+IsActiveMember             1
+EstimatedSalary    199992.48
+Exited                     1
+dtype: object
+data12.min()
+RowNumber                 1
+CustomerId         15565701
+Surname               Abazu
+CreditScore             350
+Geography            France
+Gender               Female
+Age                      18
+Tenure                    0
+Balance                 0.0
+NumOfProducts             1
+HasCrCard                 0
+IsActiveMember            0
+EstimatedSalary       11.58
+Exited                    0
+dtype: object
+5. Handle the Missing values.
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+data=pd.read_csv(r"C:\Users\rnsam\Desktop\Churn_Modelling.csv")
+data
+RowNumber	CustomerId	Surname	CreditScore	Geography	Gender	Age	Tenure	Balance	NumOfProducts	HasCrCard	IsActiveMember	EstimatedSalary	Exited
+0	1	15634602	Hargrave	619	France	Female	42	2	0.00	1	1	1	101348.88	1
+1	2	15647311	Hill	608	Spain	Female	41	1	83807.86	1	0	1	112542.58	0
+2	3	15619304	Onio	502	France	Female	42	8	159660.80	3	1	0	113931.57	1
+3	4	15701354	Boni	699	France	Female	39	1	0.00	2	0	0	93826.63	0
+4	5	15737888	Mitchell	850	Spain	Female	43	2	125510.82	1	1	1	79084.10	0
+...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+9995	9996	15606229	Obijiaku	771	France	Male	39	5	0.00	2	1	0	96270.64	0
+9996	9997	15569892	Johnstone	516	France	Male	35	10	57369.61	1	1	1	101699.77	0
+9997	9998	15584532	Liu	709	France	Female	36	7	0.00	1	0	1	42085.58	1
+9998	9999	15682355	Sabbatini	772	Germany	Male	42	3	75075.31	2	1	0	92888.52	1
+9999	10000	15628319	Walker	792	France	Female	28	4	130142.79	1	1	0	38190.78	0
+10000 rows × 14 columns
+
+#checking null values/MISSING VALUE
+data.isna()
+RowNumber	CustomerId	Surname	CreditScore	Geography	Gender	Age	Tenure	Balance	NumOfProducts	HasCrCard	IsActiveMember	EstimatedSalary	Exited
+0	False	False	False	False	False	False	False	False	False	False	False	False	False	False
+1	False	False	False	False	False	False	False	False	False	False	False	False	False	False
+2	False	False	False	False	False	False	False	False	False	False	False	False	False	False
+3	False	False	False	False	False	False	False	False	False	False	False	False	False	False
+4	False	False	False	False	False	False	False	False	False	False	False	False	False	False
+...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+9995	False	False	False	False	False	False	False	False	False	False	False	False	False	False
+9996	False	False	False	False	False	False	False	False	False	False	False	False	False	False
+9997	False	False	False	False	False	False	False	False	False	False	False	False	False	False
+9998	False	False	False	False	False	False	False	False	False	False	False	False	False	False
+9999	False	False	False	False	False	False	False	False	False	False	False	False	False	False
+10000 rows × 14 columns
+
+#CATEGORICAL FORM
+data.isna().any()
+RowNumber          False
+CustomerId         False
+Surname            False
+CreditScore        False
+Geography          False
+Gender             False
+Age                False
+Tenure             False
+Balance            False
+NumOfProducts      False
+HasCrCard          False
+IsActiveMember     False
+EstimatedSalary    False
+Exited             False
+dtype: bool
+#NUMBERICAL FORM
+data.isna().sum()
+RowNumber          0
+CustomerId         0
+Surname            0
+CreditScore        0
+Geography          0
+Gender             0
+Age                0
+Tenure             0
+Balance            0
+NumOfProducts      0
+HasCrCard          0
+IsActiveMember     0
+EstimatedSalary    0
+Exited             0
+dtype: int64
+6. Find the outliers and replace the outliers
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+data=pd.read_csv(r"C:\Users\rnsam\Desktop\Churn_Modelling.csv")
+data
+RowNumber	CustomerId	Surname	CreditScore	Geography	Gender	Age	Tenure	Balance	NumOfProducts	HasCrCard	IsActiveMember	EstimatedSalary	Exited
+0	1	15634602	Hargrave	619	France	Female	42	2	0.00	1	1	1	101348.88	1
+1	2	15647311	Hill	608	Spain	Female	41	1	83807.86	1	0	1	112542.58	0
+2	3	15619304	Onio	502	France	Female	42	8	159660.80	3	1	0	113931.57	1
+3	4	15701354	Boni	699	France	Female	39	1	0.00	2	0	0	93826.63	0
+4	5	15737888	Mitchell	850	Spain	Female	43	2	125510.82	1	1	1	79084.10	0
+...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+9995	9996	15606229	Obijiaku	771	France	Male	39	5	0.00	2	1	0	96270.64	0
+9996	9997	15569892	Johnstone	516	France	Male	35	10	57369.61	1	1	1	101699.77	0
+9997	9998	15584532	Liu	709	France	Female	36	7	0.00	1	0	1	42085.58	1
+9998	9999	15682355	Sabbatini	772	Germany	Male	42	3	75075.31	2	1	0	92888.52	1
+9999	10000	15628319	Walker	792	France	Female	28	4	130142.79	1	1	0	38190.78	0
+10000 rows × 14 columns
+
+# no outlier here
+sns.boxplot(data['Tenure'])
+C:\Users\rnsam\anaconda3\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+
+# here it shows outlier
+sns.boxplot(data['Age'])
+C:\Users\rnsam\anaconda3\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+
+sns.boxplot(data['NumOfProducts'])
+C:\Users\rnsam\anaconda3\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+
+qwe=data.quantile(q=[0.25,0.75])
+qwe
+RowNumber	CustomerId	CreditScore	Age	Tenure	Balance	NumOfProducts	HasCrCard	IsActiveMember	EstimatedSalary	Exited
+0.25	2500.75	15628528.25	6.0	3.0	3.0	0.00	1.0	0.0	0.0	51002.1100	0.0
+0.75	7500.25	15753233.75	6.0	3.0	7.0	127644.24	1.0	1.0	1.0	149388.2475	0.0
+IQR=qwe.loc[0.75]-qwe.loc[0.25]#q3-q1
+IQR
+RowNumber            4999.5000
+CustomerId         124705.5000
+CreditScore           134.0000
+Age                    12.0000
+Tenure                  4.0000
+Balance            127644.2400
+NumOfProducts           1.0000
+HasCrCard               1.0000
+IsActiveMember          1.0000
+EstimatedSalary     98386.1375
+Exited                  0.0000
+dtype: float64
+lower = qwe.loc [ 0.25 ] - ( 1.5 * IQR )
+lower
+RowNumber         -4.998500e+03
+CustomerId         1.544147e+07
+CreditScore        3.830000e+02
+Age                1.400000e+01
+Tenure            -3.000000e+00
+Balance           -1.914664e+05
+NumOfProducts     -5.000000e-01
+HasCrCard         -1.500000e+00
+IsActiveMember    -1.500000e+00
+EstimatedSalary   -9.657710e+04
+Exited             0.000000e+00
+dtype: float64
+upper=qwe .loc [ 0.25 ] - ( 1.5 * IQR )
+upper
+RowNumber         -4.998500e+03
+CustomerId         1.544147e+07
+CreditScore        3.830000e+02
+Age                1.400000e+01
+Tenure            -3.000000e+00
+Balance           -1.914664e+05
+NumOfProducts     -5.000000e-01
+HasCrCard         -1.500000e+00
+IsActiveMember    -1.500000e+00
+EstimatedSalary   -9.657710e+04
+Exited             0.000000e+00
+dtype: float64
+data.mean()
+C:\Users\rnsam\AppData\Local\Temp\ipykernel_1844\531903386.py:1: FutureWarning: Dropping of nuisance columns in DataFrame reductions (with 'numeric_only=None') is deprecated; in a future version this will raise TypeError.  Select only valid columns before calling the reduction.
+  data.mean()
+RowNumber          5.000500e+03
+CustomerId         1.569094e+07
+CreditScore        6.505288e+02
+Age                3.892180e+01
+Tenure             5.012800e+00
+Balance            7.648589e+04
+NumOfProducts      1.530200e+00
+HasCrCard          7.055000e-01
+IsActiveMember     5.151000e-01
+EstimatedSalary    1.000902e+05
+Exited             2.037000e-01
+dtype: float64
+replacing outlier
+data['Age']=np.where(data['Age']>1,4,data['Age'])
+sns.boxplot(data['Age'])
+C:\Users\rnsam\anaconda3\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+
+data['NumOfProducts']=np.where(data['NumOfProducts']>-5,2,data['NumOfProducts'])
+sns.boxplot(data['NumOfProducts'])
+C:\Users\rnsam\anaconda3\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+
+#here replace outlier for NumOfProducts
+sns.boxplot(data['NumOfProducts'])
+C:\Users\rnsam\anaconda3\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variable as a keyword arg: x. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+
+7. Check for Categorical columns and perform encoding.
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+data=pd.read_csv(r"C:\Users\rnsam\Desktop\Churn_Modelling.csv")
+data
+RowNumber	CustomerId	Surname	CreditScore	Geography	Gender	Age	Tenure	Balance	NumOfProducts	HasCrCard	IsActiveMember	EstimatedSalary	Exited
+0	1	15634602	Hargrave	619	France	Female	42	2	0.00	1	1	1	101348.88	1
+1	2	15647311	Hill	608	Spain	Female	41	1	83807.86	1	0	1	112542.58	0
+2	3	15619304	Onio	502	France	Female	42	8	159660.80	3	1	0	113931.57	1
+3	4	15701354	Boni	699	France	Female	39	1	0.00	2	0	0	93826.63	0
+4	5	15737888	Mitchell	850	Spain	Female	43	2	125510.82	1	1	1	79084.10	0
+...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+9995	9996	15606229	Obijiaku	771	France	Male	39	5	0.00	2	1	0	96270.64	0
+9996	9997	15569892	Johnstone	516	France	Male	35	10	57369.61	1	1	1	101699.77	0
+9997	9998	15584532	Liu	709	France	Female	36	7	0.00	1	0	1	42085.58	1
+9998	9999	15682355	Sabbatini	772	Germany	Male	42	3	75075.31	2	1	0	92888.52	1
+9999	10000	15628319	Walker	792	France	Female	28	4	130142.79	1	1	0	38190.78	0
+10000 rows × 14 columns
+
+#dummy variable // convert this column into categ
+data_main = pd.get_dummies(data, columns = ['Gender'])
+data_main
+RowNumber	CustomerId	Surname	CreditScore	Geography	Age	Tenure	Balance	NumOfProducts	HasCrCard	IsActiveMember	EstimatedSalary	Exited	Gender_Female	Gender_Male
+0	1	15634602	Hargrave	619	France	42	2	0.00	1	1	1	101348.88	1	1	0
+1	2	15647311	Hill	608	Spain	41	1	83807.86	1	0	1	112542.58	0	1	0
+2	3	15619304	Onio	502	France	42	8	159660.80	3	1	0	113931.57	1	1	0
+3	4	15701354	Boni	699	France	39	1	0.00	2	0	0	93826.63	0	1	0
+4	5	15737888	Mitchell	850	Spain	43	2	125510.82	1	1	1	79084.10	0	1	0
+...	...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+9995	9996	15606229	Obijiaku	771	France	39	5	0.00	2	1	0	96270.64	0	0	1
+9996	9997	15569892	Johnstone	516	France	35	10	57369.61	1	1	1	101699.77	0	0	1
+9997	9998	15584532	Liu	709	France	36	7	0.00	1	0	1	42085.58	1	1	0
+9998	9999	15682355	Sabbatini	772	Germany	42	3	75075.31	2	1	0	92888.52	1	0	1
+9999	10000	15628319	Walker	792	France	28	4	130142.79	1	1	0	38190.78	0	1	0
+10000 rows × 15 columns
+
+#encoding
+data ['HasCrCard'].replace ( { 1 : 'yes', 0 : 'no' },inplace = True )
+data
+RowNumber	CustomerId	Surname	CreditScore	Geography	Gender	Age	Tenure	Balance	NumOfProducts	HasCrCard	IsActiveMember	EstimatedSalary	Exited
+0	1	15634602	Hargrave	619	France	Female	42	2	0.00	1	yes	1	101348.88	1
+1	2	15647311	Hill	608	Spain	Female	41	1	83807.86	1	no	1	112542.58	0
+2	3	15619304	Onio	502	France	Female	42	8	159660.80	3	yes	0	113931.57	1
+3	4	15701354	Boni	699	France	Female	39	1	0.00	2	no	0	93826.63	0
+4	5	15737888	Mitchell	850	Spain	Female	43	2	125510.82	1	yes	1	79084.10	0
+...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+9995	9996	15606229	Obijiaku	771	France	Male	39	5	0.00	2	yes	0	96270.64	0
+9996	9997	15569892	Johnstone	516	France	Male	35	10	57369.61	1	yes	1	101699.77	0
+9997	9998	15584532	Liu	709	France	Female	36	7	0.00	1	no	1	42085.58	1
+9998	9999	15682355	Sabbatini	772	Germany	Male	42	3	75075.31	2	yes	0	92888.52	1
+9999	10000	15628319	Walker	792	France	Female	28	4	130142.79	1	yes	0	38190.78	0
+10000 rows × 14 columns
+
+data ['IsActiveMember'].replace ( { 1 : 'yes', 0 : 'no' },inplace = True )
+data
+RowNumber	CustomerId	Surname	CreditScore	Geography	Gender	Age	Tenure	Balance	NumOfProducts	HasCrCard	IsActiveMember	EstimatedSalary	Exited
+0	1	15634602	Hargrave	619	France	Female	42	2	0.00	1	yes	yes	101348.88	1
+1	2	15647311	Hill	608	Spain	Female	41	1	83807.86	1	no	yes	112542.58	0
+2	3	15619304	Onio	502	France	Female	42	8	159660.80	3	yes	no	113931.57	1
+3	4	15701354	Boni	699	France	Female	39	1	0.00	2	no	no	93826.63	0
+4	5	15737888	Mitchell	850	Spain	Female	43	2	125510.82	1	yes	yes	79084.10	0
+...	...	...	...	...	...	...	...	...	...	...	...	...	...	...
+9995	9996	15606229	Obijiaku	771	France	Male	39	5	0.00	2	yes	no	96270.64	0
+9996	9997	15569892	Johnstone	516	France	Male	35	10	57369.61	1	yes	yes	101699.77	0
+9997	9998	15584532	Liu	709	France	Female	36	7	0.00	1	no	yes	42085.58	1
+9998	9999	15682355	Sabbatini	772	Germany	Male	42	3	75075.31	2	yes	no	92888.52	1
+9999	10000	15628319	Walker	792	France	Female	28	4	130142.79	1	yes	no	38190.78	0
+10000 rows × 14 columns
+
+8. Split the data into dependent and independent variables.
+#dependent variable
+y=data_main['Balance']
+y
+0            0.00
+1        83807.86
+2       159660.80
+3            0.00
+4       125510.82
+          ...    
+9995         0.00
+9996     57369.61
+9997         0.00
+9998     75075.31
+9999    130142.79
+Name: Balance, Length: 10000, dtype: float64
+#independent var
+x=data_main.drop(columns=['Surname','Geography'],axis=1)
+x
+RowNumber	CustomerId	CreditScore	Age	Tenure	Balance	NumOfProducts	HasCrCard	IsActiveMember	EstimatedSalary	Exited	Gender_Female	Gender_Male
+0	1	15634602	619	42	2	0.00	1	1	1	101348.88	1	1	0
+1	2	15647311	608	41	1	83807.86	1	0	1	112542.58	0	1	0
+2	3	15619304	502	42	8	159660.80	3	1	0	113931.57	1	1	0
+3	4	15701354	699	39	1	0.00	2	0	0	93826.63	0	1	0
+4	5	15737888	850	43	2	125510.82	1	1	1	79084.10	0	1	0
+...	...	...	...	...	...	...	...	...	...	...	...	...	...
+9995	9996	15606229	771	39	5	0.00	2	1	0	96270.64	0	0	1
+9996	9997	15569892	516	35	10	57369.61	1	1	1	101699.77	0	0	1
+9997	9998	15584532	709	36	7	0.00	1	0	1	42085.58	1	1	0
+9998	9999	15682355	772	42	3	75075.31	2	1	0	92888.52	1	0	1
+9999	10000	15628319	792	28	4	130142.79	1	1	0	38190.78	0	1	0
+10000 rows × 13 columns
+
+names=x.columns
+names
+Index(['RowNumber', 'CustomerId', 'CreditScore', 'Age', 'Tenure', 'Balance',
+       'NumOfProducts', 'HasCrCard', 'IsActiveMember', 'EstimatedSalary',
+       'Exited', 'Gender_Female', 'Gender_Male'],
+      dtype='object')
+9. Scale the independent variables
+from sklearn.preprocessing import scale
+x=scale(x)
+x
+array([[-1.73187761, -0.78321342, -0.32622142, ...,  1.97716468,
+         1.09598752, -1.09598752],
+       [-1.7315312 , -0.60653412, -0.44003595, ..., -0.50577476,
+         1.09598752, -1.09598752],
+       [-1.73118479, -0.99588476, -1.53679418, ...,  1.97716468,
+         1.09598752, -1.09598752],
+       ...,
+       [ 1.73118479, -1.47928179,  0.60498839, ...,  1.97716468,
+         1.09598752, -1.09598752],
+       [ 1.7315312 , -0.11935577,  1.25683526, ...,  1.97716468,
+        -0.91241915,  0.91241915],
+       [ 1.73187761, -0.87055909,  1.46377078, ..., -0.50577476,
+         1.09598752, -1.09598752]])
+x.mean()
+5.496867918107175e-16
+x.std()
+1.0
+10. Split the data into training and testing
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2,random_state=0)
+#before 
+data_main.shape
+(10000, 15)
+#after splitting data into train and test
+x_train.shape
+(8000, 13)
+x_test.shape
+(2000, 13)
+y_train.shape
+(8000,)
+y_test.shape
+(2000,)
+ 
+ 
+ 
